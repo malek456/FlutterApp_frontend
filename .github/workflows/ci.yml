@@ -16,25 +16,25 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.x'  
+          flutter-version: '3.x' 
 
       - name: Install dependencies
         run: flutter pub get
 
-       - name: Decrypt key.properties
+      - name: Decrypt key.properties
         run: |
           openssl enc -d -aes-256-cbc -in key.properties.enc -out key.properties -k "$OPENSSL_PASSWORD"
         env:
           OPENSSL_PASSWORD: ${{ secrets.OPENSSL_PASSWORD }}
 
       - name: Build release APK
-        run: ./gradlew assembleRelease
+        run: |
+          flutter build apk --release --split-per-abi --build-number=${GITHUB_RUN_NUMBER}
 
       - name: Generate signed APK
         run: |
-          # Replace with your keystore file handling steps
-          echo ${{ secrets.JKS_BASE64 }} | base64 --decode > key.jks
-          flutter build apk --release --split-per-abi --build-number=${GITHUB_RUN_NUMBER}
+          echo ${{ secrets.KEY_STORE_FILE_BASE64 }} | base64 --decode > my-release-key.jks
+          ./gradlew assembleRelease
 
       - name: Create GitHub Release
         id: create_release
