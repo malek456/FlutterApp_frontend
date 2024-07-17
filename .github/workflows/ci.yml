@@ -42,7 +42,6 @@ jobs:
 
       - name: Generate signed APK
         run: |
-          echo ${{ secrets.KEY_STORE_FILE_BASE64 }} | base64 --decode > android/app/my-release-key.jks
           cd android
           ./gradlew assembleRelease
 
