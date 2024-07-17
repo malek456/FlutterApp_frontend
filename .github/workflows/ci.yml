@@ -23,7 +23,7 @@ jobs:
 
       - name: Decrypt key.properties
         run: |
-          openssl enc -d -aes-256-cbc -in key.properties.enc -out key.properties -k "$OPENSSL_PASSWORD"
+          openssl enc -d -aes-256-cbc -in key.properties.enc -out android/app/key.properties -k "$OPENSSL_PASSWORD"
         env:
           OPENSSL_PASSWORD: ${{ secrets.OPENSSL_PASSWORD }}
 
