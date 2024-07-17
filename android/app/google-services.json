@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "538338434709",
+    "firebase_url": "https://skillvortex-98544-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "skillvortex-98544",
+    "storage_bucket": "skillvortex-98544.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:538338434709:android:d3c3043321dd5b265b459c",
+        "android_client_info": {
+          "package_name": "com.example.untitled4"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "538338434709-45mhelvhcuobq56mbmn22rima18n7ajl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.untitled4",
+            "certificate_hash": "de852c00029655762efa522880569d933859904c"
+          }
+        },
+        {
+          "client_id": "538338434709-5vqqsv3mh2107vmtfot6a6cnrg4b7401.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmDEmqx48J2sz_uYoAurHZvFhTbH9EDAw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "538338434709-5vqqsv3mh2107vmtfot6a6cnrg4b7401.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
