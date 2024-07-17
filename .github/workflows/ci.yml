@@ -35,15 +35,15 @@ jobs:
 
       - name: Decode and place keystore file
         run: |
-          echo "${{ secrets.KEY_STORE_FILE_BASE64 }}" | base64 --decode > android/app/my-release-key.jks
+          cd android/app
+          echo ${{ secrets.KEY_STORE_FILE_BASE64 }} | base64 --decode > my-release-key.jks
 
       - name: Build release APK
-        run: |
-          flutter build apk --release --split-per-abi --build-number=${GITHUB_RUN_NUMBER}
+        run: flutter build apk --release --split-per-abi --build-number=${GITHUB_RUN_NUMBER}
 
       - name: Generate signed APK
         run: |
-          echo ${{ secrets.KEY_STORE_FILE_BASE64 }} | base64 --decode > my-release-key.jks
+          cd android/app
           ./gradlew assembleRelease
 
       - name: Create GitHub Release
