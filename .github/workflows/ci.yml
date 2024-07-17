@@ -21,8 +21,18 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Build APK
-        run: flutter build apk --release
+      - name: Build release APK
+        run: |
+          echo "$STORE_PASSWORD" > key.properties
+          echo "$KEY_PASSWORD" >> key.properties
+          echo "keyAlias=$KEY_ALIAS" >> key.properties
+          echo "storeFile=my-release-key.jks" >> key.properties
+          flutter build apk --release
+        env:
+          STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          STORE_FILE: ${{ secrets.STORE_FILE }}
 
       - name: Generate signed APK
         run: |
