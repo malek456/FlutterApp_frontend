@@ -38,12 +38,12 @@ jobs:
           echo "New version: $NEW_VERSION"
           sed -i "s/^version: .*/version: $NEW_VERSION/" pubspec.yaml
           echo "VERSION=$NEW_VERSION" >> $GITHUB_ENV
-          
+
       - name: Commit updated version
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
-          git commit -am "Increment version to ${{ env.VERSION }}"
+          git commit -am "${{ env.VERSION }}"
           git push
 
       - name: Decrypt key.properties
@@ -63,12 +63,10 @@ jobs:
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: v${{ github.run_number }}
-          #name: Release ${{ github.run_number }}
-          #files: |
-            #flutter-apk/app-release.apk
-        #env:
-          #GITHUB_TOKEN: ${{ github.token }}
+          tag_name: v${{ env.VERSION }}
+          name: Release ${{ env.VERSION }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload APK to GitHub Release
         uses: actions/upload-release-asset@v1
