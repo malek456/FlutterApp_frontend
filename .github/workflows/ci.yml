@@ -27,6 +27,18 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+       - name: Read and increment version
+        id: increment_version
+        run: |
+          VERSION=$(grep '^version: ' pubspec.yaml | awk '{print $2}')
+          echo "Current version: $VERSION"
+          IFS='.' read -r MAJOR MINOR PATCH <<<"${VERSION//[-]/ }"
+          PATCH=$((PATCH + 1))
+          NEW_VERSION="$MAJOR.$MINOR.$PATCH"
+          echo "New version: $NEW_VERSION"
+          sed -i "s/^version: .*/version: $NEW_VERSION/" pubspec.yaml
+          echo "VERSION=$NEW_VERSION" >> $GITHUB_ENV
+
       - name: Decrypt key.properties
         run: |
           openssl enc -d -aes-256-cbc -in key.properties.enc -out android/app/key.properties -k "$OPENSSL_PASSWORD"
@@ -40,27 +52,21 @@ jobs:
       - name: Build release APK
         run: flutter build apk --release --split-per-abi --build-number=${GITHUB_RUN_NUMBER}
 
-      - name: Generate signed APK
-        run: |
-          cd android
-          ./gradlew assembleRelease
-
-
       - name: Create GitHub Release
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: v${{ github.run_number }}
-          name: Release ${{ github.run_number }}
-          files: |
-            flutter-apk/app-release.apk
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+          #name: Release ${{ github.run_number }}
+          #files: |
+            #flutter-apk/app-release.apk
+        #env:
+          #GITHUB_TOKEN: ${{ github.token }}
 
       - name: Upload APK to GitHub Release
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{  github.token }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: build/app/outputs/flutter-apk/app-release.apk
